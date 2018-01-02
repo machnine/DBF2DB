@@ -73,7 +73,7 @@ class Dbf2sqlite:
         
         
     def __make_table(self):
-        
+        '''make table if not exists'''
         fields = ', '.join(['{} {}'.format(k, v) for k,v in self.structure.items()])
         
         query = 'CREATE TABLE IF NOT EXISTS {table} ({fields});'.format(table=self.table_name, 
@@ -83,7 +83,7 @@ class Dbf2sqlite:
         
     
     def __update_table(self, append):
-        
+        '''update the existing table or drop then update depending on 'append' param '''
         if append:
             pass
         else:
@@ -93,10 +93,9 @@ class Dbf2sqlite:
         
         field_names = self.__table.field_names
         
-        query = '''INSERT INTO {table} ({fields})
+        query = '''INSERT INTO {table} 
                    VALUES ({values})'''.format(table=self.table_name, 
-                                              fields=', '.join(field_names),
-                                              values=', '.join(['?' for x in range(len(field_names))]))
+                                               values=', '.join(['?' for x in range(len(field_names))]))
         #capture the errors
         self.error_list = []
         for record in self.__table:
