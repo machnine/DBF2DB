@@ -1,2 +1,3 @@
-# Dbf2Sqlite
-Converting legacy DBF files to Sqlite3 tables
+#DBF to Databases
+
+Convert dBase tables to SQLite, Microsoft Access and Microsoft SQL server tables
