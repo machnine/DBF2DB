@@ -19,8 +19,10 @@ class Dbf2Db:
                  ,append=False                 #append or drop and create new                 
                  ,ignore_memos=True            #ignore memo field
                  ,codepage=None                #codepage (https://en.wikipedia.org/wiki/Code_page)
+                 ,quietmode=False              #don't output to StdIO
                  ):
         
+        self.__quietmode = quietmode
         dbf_file = path.join(dbf_path, dbf_filename)
         #open the dbf table as read only
         self.__table = Table(dbf_file
@@ -44,6 +46,7 @@ class Dbf2Db:
         self.__append = append
 
 
+
     def update_target(self, new_table_name=None, close_dbf=True):
         '''update the target database'''
 
@@ -51,13 +54,16 @@ class Dbf2Db:
             self.__table_name = new_table_name
 
         time_start = datetime.datetime.now()
-        print(f'Extracting {self.__record_count} records to target database...')
+        
+        if not self.__quietmode:
+            print(f'Extracting {self.__record_count} records to target database...')
         
         self.__update_table(append=self.__append)
         
         time_finish = datetime.datetime.now()
         time_elapsed = (time_finish - time_start).total_seconds()
-        print(f'{self.__written_count} records of {self.__record_count} updated successfully in {time_elapsed} seconds.')
+        if not self.__quietmode:
+            print(f'{self.__written_count} records of {self.__record_count} updated successfully in {time_elapsed} seconds.')
 
         if close_dbf:
             #close the link to dbf file
@@ -198,7 +204,7 @@ class Dbf2Db:
                 count += 1
             except Exception as e:
                 print(e)
-                print(record)
+                print(_record)
         self.__target_db.commit()
         self.__written_count = count        
 
