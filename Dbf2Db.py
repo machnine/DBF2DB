@@ -2,9 +2,9 @@ import datetime
 from os import path
 
 from dbf import DbfStatus, Table
-from pyodbc import SQL_DBMS_NAME
+import pyodbc
 
-#mapping the datatypes of DBF to those of the target DBs
+# mapping the datatypes of DBF to those of the target DBs
 DTYPE_MAP = {
     "access": {"C": "TEXT", "D": "DATE", "M": "TEXT", "N": "NUMBER", "L": "BIT"},
     "sqlite": {"C": "TEXT", "D": "TEXT", "M": "TEXT", "N": "REAL", "L": "TEXT"},
@@ -33,8 +33,8 @@ class Dbf2Db:
 
         self.__record_count = len(self.__table)
         self.__written_count = 0
-        
-        #if target table name is not given use file name
+
+        # if target table name is not given use file name
         if target_tablename:
             self.__table_name = target_tablename
         else:
@@ -111,7 +111,7 @@ class Dbf2Db:
         info = None
         # databases handled by pypyodbc
         try:
-            info = self.__target_db.getinfo(SQL_DBMS_NAME)
+            info = self.__target_db.getinfo(pyodbc.SQL_DBMS_NAME)
             if info.lower() == "access":
                 return "access"
             elif info.lower() == "microsoft sql server":

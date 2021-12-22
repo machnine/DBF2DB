@@ -2,3 +2,4 @@ __pycache__/
 .env/
 .vscode/
 activate.bat
+deactivate.bat
